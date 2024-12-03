@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from typing import Tuple, Generator, List
+from tabulate import tabulate
 
 def collatz_op(x: int) -> Tuple[int, int]:
     """
@@ -40,7 +41,18 @@ def collatz_string(sequence: List[int]) -> str:
     )
 
 # Generate and display Collatz sequences for numbers from 1 to 19
+data = []  # Store rows of data for tabulation
 for i in range(1, 20):
     nums = list(collatz(i))  # Generate the Collatz sequence
     seq = collatz_string(nums)  # Generate the binary operation string
-    print(f"{i}: Binary Sequence: {seq}, Numbers: {nums}")
+    data.append([i, seq, nums])  # Append the sequence and numbers for tabulation
+
+# Determine column alignments based on the longest string in each column
+colalign = [
+    "right",  # Align numbers to the right
+    "right",  # Align binary sequences to the right
+    "right"   # Align Collatz numbers to the right
+]
+
+# Create a table using tabulate with dynamic alignment
+print(tabulate(data, headers=["Starting Number", "Binary Sequence", "Collatz Numbers"], tablefmt="fancy_grid", colalign=colalign))
