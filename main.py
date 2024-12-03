@@ -50,7 +50,7 @@ def collatz_string(sequence: List[int]) -> str:
     :param sequence: A list of integers in the Collatz sequence.
     :return: A string representation of the sequence with compacted references.
     """
-    return "->".join(map(str, sequence))
+    return "→".join(map(str, sequence))
 
 # Cache for Collatz sequences
 cache = {}
