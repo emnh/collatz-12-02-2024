@@ -40,19 +40,27 @@ def collatz_string(sequence: List[int]) -> str:
         str(collatz_op(x)[1]) for x in sequence
     )
 
+def compact_sequence(sequence: List[int]) -> str:
+    """
+    Compactly represent a Collatz sequence as a comma-separated string.
+
+    :param sequence: A list of integers in the Collatz sequence.
+    :return: A compact string representation of the sequence.
+    """
+    return ",".join(map(str, sequence))
+
 # Generate and display Collatz sequences for numbers from 1 to 19
 data = []  # Store rows of data for tabulation
 for i in range(1, 20):
     nums = list(collatz(i))  # Generate the Collatz sequence
     seq = collatz_string(nums)  # Generate the binary operation string
-    data.append([i, seq, nums])  # Append the sequence and numbers for tabulation
+    compact_nums = compact_sequence(nums)  # Compact the Collatz numbers
+    data.append([i, seq, compact_nums])  # Append the data for tabulation
 
-# Determine column alignments based on the longest string in each column
-colalign = [
-    "right",  # Align numbers to the right
-    "right",  # Align binary sequences to the right
-    "right"   # Align Collatz numbers to the right
-]
-
-# Create a table using tabulate with dynamic alignment
-print(tabulate(data, headers=["Starting Number", "Binary Sequence", "Collatz Numbers"], tablefmt="fancy_grid", colalign=colalign))
+# Create a table using tabulate with right-aligned columns and compacted number sequences
+print(tabulate(
+    data,
+    headers=["Start", "Binary Sequence", "Collatz Sequence"],
+    tablefmt="fancy_grid",
+    colalign=("right", "right", "right")  # Right-align all columns
+))
