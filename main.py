@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
 
+def collatzOp(x):
+    if x % 2 == 0:
+        return (x // 2, 0)
+    else:
+        return (3 * x + 1, 1)
+
 def collatz(x):
     """
     Generator function to produce the Collatz sequence for a given integer x.
@@ -12,12 +18,14 @@ def collatz(x):
     
     while x != 1:
         yield x
-        if x % 2 == 0:  # If x is even
-            x //= 2
-        else:           # If x is odd
-            x = 3 * x + 1
+        x = collatzOp(x)[0]
     yield x  # Finally yield 1
+
+def collatzString(sequence):
+    l = [str(collatzOp(x)[1]) for x in sequence]
+    return "".join(l)
 
 for i in range(1, 20):
     nums = list(collatz(i))
-    print(nums)
+    seq = collatzString(nums)
+    print(seq, nums)
