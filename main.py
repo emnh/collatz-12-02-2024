@@ -2,6 +2,9 @@
 
 from typing import Tuple, List, Dict
 from tabulate import tabulate
+from sympy import symbols, simplify, solve, diff, integrate, limit, series, Matrix
+from sympy.plotting import plot
+
 
 def collatz_op(x: int) -> Tuple[int, int]:
     """
@@ -71,6 +74,28 @@ def full_binary_sequence(start: int) -> str:
         x, _ = collatz_op(x)
     return "".join(binary_seq)
 
+def collatz_transformation(start: int) -> Tuple[int, int]:
+    """
+    Calculate the effect of the Collatz sequence on the algebraic variable x.
+
+    :param start: The starting integer.
+    :return: A tuple (a, b) such that the transformation is ax + b.
+    """
+    x_var = symbols("x")  # Define a symbolic variable
+    transformation = x_var
+    current = start
+
+    while current != 1:
+        if current % 2 == 0:  # Even operation
+            transformation = simplify(transformation / 2)
+            current //= 2
+        else:  # Odd operation
+            transformation = simplify(3 * transformation + 1)
+            current = 3 * current + 1
+
+    # Return the coefficients a and b of the transformation ax + b
+    return transformation.as_coefficients_dict()[x_var], transformation.as_coefficients_dict()[1]
+
 # Cache for Collatz sequences
 cache = {}
 
@@ -82,12 +107,13 @@ for i in range(1, 20):
     binary_seq = full_binary_sequence(i)  # Full binary sequence for the starting number
     full_seq_str = collatz_string(full_sequence, separator="→")  # Full sequence with compacting for any x
     restricted_seq_str = collatz_string(restricted_sequence, separator="→")  # Compact sequence for x < starting number
-    data.append([i, binary_seq, full_seq_str, restricted_seq_str])  # Append all columns
+    a, b = collatz_transformation(i)  # Algebraic transformation coefficients
+    data.append([i, binary_seq, full_seq_str, restricted_seq_str, f"{a}x + {b}"])  # Append all columns
 
 # Create a table using tabulate
 print(tabulate(
     data,
-    headers=["Start", "Full Binary Sequence", "Compact (C(x) for any x)", "Compact (C(x) only if x < Start)"],
+    headers=["Start", "Full Binary Sequence", "Compact (C(x) for any x)", "Compact (C(x) only if x < Start)", "Transformation"],
     tablefmt="fancy_grid",
-    colalign=("right", "right", "right", "right")  # Right-align all columns
+    colalign=("right", "right", "right", "right", "right")  # Right-align all columns
 ))
