@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from typing import Tuple, Generator, List, Dict
+from typing import Tuple, List, Dict
 from tabulate import tabulate
 
 def collatz_op(x: int) -> Tuple[int, int]:
@@ -56,14 +56,20 @@ def collatz_string(sequence: List[int], separator: str = "→") -> str:
     """
     return separator.join(map(str, sequence))
 
-def binary_sequence(sequence: List[int]) -> str:
+def full_binary_sequence(start: int) -> str:
     """
-    Generate the binary sequence of operations for a Collatz sequence.
+    Generate the full binary sequence of operations for a starting number.
 
-    :param sequence: A list of integers in the Collatz sequence.
+    :param start: The starting integer.
     :return: A binary string where 0 represents division by 2 and 1 represents 3x + 1.
     """
-    return "".join(str(collatz_op(x)[1]) for x in sequence if isinstance(x, int))
+    binary_seq = []
+    x = start
+    while x != 1:
+        _, operation = collatz_op(x)
+        binary_seq.append(str(operation))
+        x, _ = collatz_op(x)
+    return "".join(binary_seq)
 
 # Cache for Collatz sequences
 cache = {}
@@ -73,7 +79,7 @@ data = []  # Store rows of data for tabulation
 for i in range(1, 20):
     full_sequence = collatz(i, cache, restrict_cache=False)  # Compact for any cached x
     restricted_sequence = collatz(i, cache, restrict_cache=True)  # Compact only for x < starting number
-    binary_seq = binary_sequence(full_sequence)  # Binary sequence of operations
+    binary_seq = full_binary_sequence(i)  # Full binary sequence for the starting number
     full_seq_str = collatz_string(full_sequence, separator="→")  # Full sequence with compacting for any x
     restricted_seq_str = collatz_string(restricted_sequence, separator="→")  # Compact sequence for x < starting number
     data.append([i, binary_seq, full_seq_str, restricted_seq_str])  # Append all columns
@@ -81,7 +87,7 @@ for i in range(1, 20):
 # Create a table using tabulate
 print(tabulate(
     data,
-    headers=["Start", "Binary Sequence", "Compact (C(x) for any x)", "Compact (C(x) only if x < Start)"],
+    headers=["Start", "Full Binary Sequence", "Compact (C(x) for any x)", "Compact (C(x) only if x < Start)"],
     tablefmt="fancy_grid",
     colalign=("right", "right", "right", "right")  # Right-align all columns
 ))
