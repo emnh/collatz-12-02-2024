@@ -96,24 +96,29 @@ def collatz_transformation(start: int) -> Tuple[int, int]:
     # Return the coefficients a and b of the transformation ax + b
     return transformation.as_coefficients_dict()[x_var], transformation.as_coefficients_dict()[1]
 
-# Cache for Collatz sequences
-cache = {}
+def main():
 
-# Generate data for the table
-data = []  # Store rows of data for tabulation
-for i in range(1, 20):
-    full_sequence = collatz(i, cache, restrict_cache=False)  # Compact for any cached x
-    restricted_sequence = collatz(i, cache, restrict_cache=True)  # Compact only for x < starting number
-    binary_seq = full_binary_sequence(i)  # Full binary sequence for the starting number
-    full_seq_str = collatz_string(full_sequence, separator="→")  # Full sequence with compacting for any x
-    restricted_seq_str = collatz_string(restricted_sequence, separator="→")  # Compact sequence for x < starting number
-    a, b = collatz_transformation(i)  # Algebraic transformation coefficients
-    data.append([i, binary_seq, full_seq_str, restricted_seq_str, f"{a}x + {b}"])  # Append all columns
+    # Cache for Collatz sequences
+    cache = {}
 
-# Create a table using tabulate
-print(tabulate(
-    data,
-    headers=["Start", "Full Binary Sequence", "Compact (C(x) for any x)", "Compact (C(x) only if x < Start)", "Transformation"],
-    tablefmt="fancy_grid",
-    colalign=("right", "right", "right", "right", "right")  # Right-align all columns
-))
+    # Generate data for the table
+    data = []  # Store rows of data for tabulation
+    for i in range(1, 20):
+        full_sequence = collatz(i, cache, restrict_cache=False)  # Compact for any cached x
+        restricted_sequence = collatz(i, cache, restrict_cache=True)  # Compact only for x < starting number
+        binary_seq = full_binary_sequence(i)  # Full binary sequence for the starting number
+        full_seq_str = collatz_string(full_sequence, separator="→")  # Full sequence with compacting for any x
+        restricted_seq_str = collatz_string(restricted_sequence, separator="→")  # Compact sequence for x < starting number
+        a, b = collatz_transformation(i)  # Algebraic transformation coefficients
+        data.append([i, binary_seq, full_seq_str, restricted_seq_str, f"{a}x + {b}"])  # Append all columns
+
+    # Create a table using tabulate
+    print(tabulate(
+        data,
+        headers=["Start", "Full Binary Sequence", "Compact (C(x) for any x)", "Compact (C(x) only if x < Start)", "Transformation"],
+        tablefmt="fancy_grid",
+        colalign=("right", "right", "right", "right", "right")  # Right-align all columns
+    ))
+
+if __name__ == "__main__":
+    main()
