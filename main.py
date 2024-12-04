@@ -96,14 +96,35 @@ def collatz_transformation(start: int) -> Tuple[int, int]:
     # Return the coefficients a and b of the transformation ax + b
     return transformation.as_coefficients_dict()[x_var], transformation.as_coefficients_dict()[1]
 
+def findIntegersMatchingAXPlusB(a, b):
+    matches = []
+    for x in range(1, 1000):
+        y = a * x + b
+        #print("y = ax + b:", y, "=", a, "*", x, "+", b)
+        # Let y1 and y2 be integer solutions for x1 and xy2.
+        # Then y1 = a * x1 + b and y2 = a * x2 + b.
+        # y2 - y1 = a * x2 + b - (a * x1 + b) = a * (x2 - x1).
+        # So then y2 = y1 + a * (x2 - x1)
+        if int(y) == y:
+            matches.append((x, y))
+            continue
+            for i in range(1, 11):
+                x2 = x * i
+                y2 = a * x2 + b
+                matches.append((x2, y2))
+            #break
+    return matches
+
 def main():
 
     # Cache for Collatz sequences
     cache = {}
 
+    N = 20
+
     # Generate data for the table
     data = []  # Store rows of data for tabulation
-    for i in range(1, 20):
+    for i in range(1, N + 1):
         full_sequence = collatz(i, cache, restrict_cache=False)  # Compact for any cached x
         restricted_sequence = collatz(i, cache, restrict_cache=True)  # Compact only for x < starting number
         binary_seq = full_binary_sequence(i)  # Full binary sequence for the starting number
@@ -119,6 +140,15 @@ def main():
         tablefmt="fancy_grid",
         colalign=("right", "right", "right", "right", "right")  # Right-align all columns
     ))
+
+    for i in range(1, N + 1):
+        a, b = collatz_transformation(i)
+        matches = findIntegersMatchingAXPlusB(a, b)
+        toPrint = []
+        for x, y in matches:
+            toPrint.append(str(x) + "→" + str(y))
+        print(str(i) + ":", "y = ax + b:", "y", "=", a, "*", "x", "+", str(b) + ":", toPrint)
+        print("")
 
 if __name__ == "__main__":
     main()
