@@ -133,7 +133,7 @@ def main():
         a, b = collatz_transformation(i)  # Algebraic transformation coefficients
         eqx, eqy = find_solution_equation(a.numerator, a.denominator, b.numerator, b.denominator)
         nums = find_integer_solutions(a.numerator, a.denominator, b.numerator, b.denominator)
-        data.append([i, binary_seq, full_seq_str, restricted_seq_str, f"{a}x + {b}", eqx, eqy, nums[0]])  # Append all columns
+        data.append([i, binary_seq, full_seq_str, restricted_seq_str, f"{a}x + {b}", eqx, eqy, nums[0:2]])  # Append all columns
 
     headers = []
     headers += ["Start", "Full Binary Sequence", "Compact (C(x) for any x)", "Compact (C(x) only if x < Start)", "Transformation"]

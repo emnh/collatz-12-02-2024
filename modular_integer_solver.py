@@ -37,7 +37,7 @@ def find_solution_equation(a_num, a_den, b_num, b_den):
 
     # General equations
     y_general = f"y = {y_initial} + k * {delta_y}"
-    x_general = f"x = (m * y - {r_prime}) / {p_prime} where m = {m}, k ∈ Z"
+    x_general = f"x = ({m} * y - {r_prime}) / {p_prime} where k ∈ Z"
 
     return y_general, x_general
 
@@ -72,7 +72,8 @@ def find_integer_solutions(a_num, a_den, b_num, b_den):
     for c in range(0, 6):  # Adjust range for how many solutions you want
         y = y_initial + c * delta_y
         x = (m * y - r_prime) // p_prime
-        solutions.append((x, y))
+        if x > 0 and y > 0:
+            solutions.append((x, y))
 
     return solutions
 
