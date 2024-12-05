@@ -30,7 +30,7 @@ def find_integer_solutions(a_num, a_den, b_num, b_den):
     delta_x = m // gcd(m, p_prime)            # Step size for x
 
     # Generate the first few solutions
-    for c in range(-5, 6):  # Adjust range for how many solutions you want
+    for c in range(0, 6):  # Adjust range for how many solutions you want
         y = y_initial + c * delta_y
         x = (m * y - r_prime) // p_prime
         solutions.append((x, y))

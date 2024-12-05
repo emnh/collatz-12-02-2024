@@ -4,7 +4,7 @@ from typing import Tuple, List, Dict
 from tabulate import tabulate
 from sympy import symbols, simplify, solve, diff, integrate, limit, series, Matrix
 from sympy.plotting import plot
-
+from modular_integer_solver import find_integer_solutions
 
 def collatz_op(x: int) -> Tuple[int, int]:
     """
