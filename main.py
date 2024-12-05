@@ -131,7 +131,8 @@ def main():
         full_seq_str = collatz_string(full_sequence, separator="→")  # Full sequence with compacting for any x
         restricted_seq_str = collatz_string(restricted_sequence, separator="→")  # Compact sequence for x < starting number
         a, b = collatz_transformation(i)  # Algebraic transformation coefficients
-        data.append([i, binary_seq, full_seq_str, restricted_seq_str, f"{a}x + {b}"])  # Append all columns
+        eq = find_integer_solutions(a.numerator, a.denominator, b.numerator, b.denominator)
+        data.append([i, binary_seq, full_seq_str, restricted_seq_str, f"{a}x + {b}", eq])  # Append all columns
 
     # Create a table using tabulate
     print(tabulate(
@@ -142,6 +143,7 @@ def main():
     ))
 
     for i in range(1, N + 1):
+        break
         a, b = collatz_transformation(i)
         matches = findIntegersMatchingAXPlusB(a, b)
         toPrint = []
