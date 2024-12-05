@@ -61,11 +61,11 @@ def extended_gcd(a, b):
     y = x1 - (a // b) * y1
     return g, x, y
 
+if __name__ == "__main__":
+    # Example Usage
+    # Solve y = (3/64)x + (1/16)
+    a_num, a_den = 3, 64  # a = 3/64
+    b_num, b_den = 1, 16  # b = 1/16
 
-# Example Usage
-# Solve y = (3/64)x + (1/16)
-a_num, a_den = 3, 64  # a = 3/64
-b_num, b_den = 1, 16  # b = 1/16
-
-solutions = find_integer_solutions(a_num, a_den, b_num, b_den)
-print("Integer solutions (x, y):", solutions)
+    solutions = find_integer_solutions(a_num, a_den, b_num, b_den)
+    print("Integer solutions (x, y):", solutions)
