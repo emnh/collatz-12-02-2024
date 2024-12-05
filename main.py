@@ -4,7 +4,7 @@ from typing import Tuple, List, Dict
 from tabulate import tabulate
 from sympy import symbols, simplify, solve, diff, integrate, limit, series, Matrix
 from sympy.plotting import plot
-from modular_integer_solver import find_integer_solutions
+from modular_integer_solver import find_integer_solutions, find_solution_equation
 
 def collatz_op(x: int) -> Tuple[int, int]:
     """
@@ -131,13 +131,18 @@ def main():
         full_seq_str = collatz_string(full_sequence, separator="→")  # Full sequence with compacting for any x
         restricted_seq_str = collatz_string(restricted_sequence, separator="→")  # Compact sequence for x < starting number
         a, b = collatz_transformation(i)  # Algebraic transformation coefficients
-        eq = find_integer_solutions(a.numerator, a.denominator, b.numerator, b.denominator)
-        data.append([i, binary_seq, full_seq_str, restricted_seq_str, f"{a}x + {b}", eq])  # Append all columns
+        eqx, eqy = find_solution_equation(a.numerator, a.denominator, b.numerator, b.denominator)
+        nums = find_integer_solutions(a.numerator, a.denominator, b.numerator, b.denominator)
+        data.append([i, binary_seq, full_seq_str, restricted_seq_str, f"{a}x + {b}", eqx, eqy, nums[0]])  # Append all columns
+
+    headers = []
+    headers += ["Start", "Full Binary Sequence", "Compact (C(x) for any x)", "Compact (C(x) only if x < Start)", "Transformation"]
+    headers += ["X Equation", "Y Equation", "Sample"]
 
     # Create a table using tabulate
     print(tabulate(
         data,
-        headers=["Start", "Full Binary Sequence", "Compact (C(x) for any x)", "Compact (C(x) only if x < Start)", "Transformation"],
+        headers,
         tablefmt="fancy_grid",
         colalign=("right", "right", "right", "right", "right")  # Right-align all columns
     ))

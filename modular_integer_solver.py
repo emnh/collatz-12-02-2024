@@ -2,6 +2,45 @@
 
 from math import gcd
 
+def find_solution_equation(a_num, a_den, b_num, b_den):
+    """
+    Find the parametric equation for integer solutions of y = (a_num/a_den) * x + (b_num/b_den).
+    
+    Parameters:
+    a_num: int - Numerator of a
+    a_den: int - Denominator of a
+    b_num: int - Numerator of b
+    b_den: int - Denominator of b
+    
+    Returns:
+    equation: tuple - (y_general, x_general), the parametric solution as strings
+    """
+    from math import gcd
+
+    # Step 1: Clear fractions
+    m = lcm(a_den, b_den)
+    p_prime = m * a_num // a_den
+    r_prime = m * b_num // b_den
+
+    # Step 2: Solve modular equation for smallest y
+    g = gcd(m, abs(p_prime))
+    delta_y = abs(p_prime) // g
+    delta_x = m // g
+
+    # Check if modular inverse exists
+    mod_inverse = modular_inverse(m, abs(p_prime))
+    if mod_inverse == -1:
+        raise ValueError("No modular inverse exists; no solutions possible.")
+
+    # Smallest positive y
+    y_initial = (mod_inverse * (r_prime % abs(p_prime))) % abs(p_prime)
+
+    # General equations
+    y_general = f"y = {y_initial} + k * {delta_y}"
+    x_general = f"x = (m * y - {r_prime}) / {p_prime} where m = {m}, k ∈ Z"
+
+    return y_general, x_general
+
 def find_integer_solutions(a_num, a_den, b_num, b_den):
     """
     Find integer solutions for y = (a_num/a_den) * x + (b_num/b_den)
