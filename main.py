@@ -133,10 +133,14 @@ def main():
         a, b = collatz_transformation(i)  # Algebraic transformation coefficients
         eqx, eqy = find_solution_equation(a.numerator, a.denominator, b.numerator, b.denominator)
         nums = find_integer_solutions(a.numerator, a.denominator, b.numerator, b.denominator)
-        data.append([i, binary_seq, full_seq_str, restricted_seq_str, f"{a}x + {b}", eqx, eqy, nums[0:2]])  # Append all columns
-
+        row = [i, binary_seq]
+        # row += [full_seq_str]
+        row += [restricted_seq_str, f"{a}x + {b}", eqx, eqy, nums[0:2]]
+        data.append(row)
     headers = []
-    headers += ["Start", "Full Binary Sequence", "Compact (C(x) for any x)", "Compact (C(x) only if x < Start)", "Transformation"]
+    headers += ["Start", "Full Binary Sequence"] 
+    #headers += ["Compact (C(x) for any x)"]
+    headers += ["Compact (C(x) only if x < Start)", "Transformation"]
     headers += ["X Equation", "Y Equation", "Sample"]
 
     # Create a table using tabulate
@@ -144,7 +148,7 @@ def main():
         data,
         headers,
         tablefmt="fancy_grid",
-        colalign=("right", "right", "right", "right", "right")  # Right-align all columns
+        colalign=("right",) * len(headers) # Right-align all columns
     ))
 
     for i in range(1, N + 1):
