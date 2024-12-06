@@ -141,7 +141,7 @@ def main():
     headers += ["Start", "Full Binary Sequence"] 
     #headers += ["Compact (C(x) for any x)"]
     headers += ["Compact (C(x) only if x < Start)", "Transformation"]
-    headers += ["X Equation", "Y Equation", "Sample"]
+    headers += ["X Equation", "Y Equation (k ∈ Z)", "Sample"]
 
     # Create a table using tabulate
     print(tabulate(
