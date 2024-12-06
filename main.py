@@ -135,7 +135,7 @@ def main():
         nums = find_integer_solutions(a.numerator, a.denominator, b.numerator, b.denominator)
         row = [i, binary_seq]
         # row += [full_seq_str]
-        row += [restricted_seq_str, f"{a}x + {b}", eqx, eqy, nums[0:2]]
+        row += [restricted_seq_str, f"{a}x + {b}", eqx, eqy, nums[1]]
         data.append(row)
     headers = []
     headers += ["Start", "Full Binary Sequence"] 
